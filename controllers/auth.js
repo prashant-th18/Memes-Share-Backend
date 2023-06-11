@@ -55,7 +55,6 @@ exports.handleLogin = async (req, res, next) => {
 
 exports.verifyToken = async (req, res, next) => {
 	const authHeader = req.get("Authorization");
-	// console.log(authHeader);
 	if (!authHeader) {
 		return res.status(401).json({
 			message: "Not Authenticated",
@@ -77,12 +76,13 @@ exports.verifyToken = async (req, res, next) => {
 			message: "Not a valid token",
 		});
 	} else {
+		// console.log("HERE", decodedToken);
 		res.status(200).json({
 			message: "Valid User",
 			userData: {
 				name: decodedToken.name,
 				email: decodedToken.email,
-				imageUrl: decodedToken.imageUrl,
+				imageUrl: decodedToken.picture,
 				sub: decodedToken.sub,
 			},
 		});

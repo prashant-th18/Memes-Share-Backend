@@ -3,10 +3,12 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const cors = require("cors");
+const path = require("path");
 
 const PORT = process.env.PORT || 8080;
 
 const authRoutes = require("./routes/auth");
+const postRoutes = require("./routes/post");
 
 const app = express();
 
@@ -27,9 +29,11 @@ app.use(express.json());
 app.use(bodyParser.json());
 // Use to parse nested objects, etc..
 app.use(express.urlencoded({ extended: true }));
+app.use("/images", express.static(path.join(__dirname, "images")));
 
 // Routes Definition
 app.use("/auth", authRoutes);
+app.use("/posts", postRoutes);
 
 // Handling errors
 app.use((errors, req, res, next) => {

@@ -21,11 +21,17 @@ const postSchema = new Schema(
 			type: String,
 			required: true,
 		},
-		body,
+		body: { type: String },
 		image: {
 			type: String,
 		},
-		upVote,
+		upVote: [
+			{
+				type: mongoose.Schema.Types.ObjectId,
+				required: true,
+				ref: "User",
+			},
+		],
 		downVote: [
 			{
 				type: mongoose.Schema.Types.ObjectId,
