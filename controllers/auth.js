@@ -34,6 +34,7 @@ exports.handleLogin = async (req, res, next) => {
 			email,
 			picture,
 			sub,
+			_id: user._id,
 		},
 		process.env.secret_key,
 		{
@@ -45,6 +46,7 @@ exports.handleLogin = async (req, res, next) => {
 		message: "User LoggedIn Successfully!",
 		token: jwtToken,
 		userData: {
+			_id: user._id,
 			name: user.name,
 			email: user.email,
 			imageUrl: user.imageUrl,
@@ -62,7 +64,6 @@ exports.verifyToken = async (req, res, next) => {
 	}
 
 	const token = authHeader.split(" ")[1];
-	console.log(token);
 	let decodedToken;
 	try {
 		decodedToken = jwt.verify(token, process.env.secret_key);
@@ -76,7 +77,6 @@ exports.verifyToken = async (req, res, next) => {
 			message: "Not a valid token",
 		});
 	} else {
-		// console.log("HERE", decodedToken);
 		res.status(200).json({
 			message: "Valid User",
 			userData: {
@@ -84,6 +84,7 @@ exports.verifyToken = async (req, res, next) => {
 				email: decodedToken.email,
 				imageUrl: decodedToken.picture,
 				sub: decodedToken.sub,
+				_id: decodedToken._id,
 			},
 		});
 	}

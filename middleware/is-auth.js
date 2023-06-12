@@ -24,6 +24,7 @@ module.exports = (req, res, next) => {
 			message: "Not a valid token",
 		});
 	} else {
+		req.userId = decodedToken._id;
 		next();
 	}
 };
