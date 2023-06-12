@@ -3,11 +3,21 @@ const User = require("../models/user");
 
 exports.getPosts = async (req, res, next) => {
 	try {
-		const data = await Post.find();
+		const userId = req.query.id;
+		const query = {};
+		let data;
+
+		if (userId) {
+			query.user = userId;
+			data = await Post.find(query);
+		} else {
+			data = await Post.find();
+		}
 		res.status(200).json({
 			posts: data,
 		});
 	} catch (err) {
+		console.log(err);
 		res.status(500).json({
 			err: err,
 		});
@@ -122,6 +132,42 @@ exports.deletePost = async (req, res, next) => {
 	} catch (err) {
 		res.status(500).json({
 			message: "Something Went Wrong",
+		});
+	}
+};
+
+exports.getPost = async (req, res, next) => {
+	try {
+		const postId = req.params.id;
+		const post = await Post.findById(postId);
+		res.status(200).json({
+			post: post,
+		});
+	} catch (err) {
+		res.status(500).json({
+			err: err,
+		});
+	}
+};
+
+exports.createComment = async (req, res, next) => {
+	try {
+		const { comment } = req.body;
+		const postId = req.params.id;
+
+		const post = await Post.findById(postId);
+		post.comments.push({
+			...comment,
+		});
+		post.numComments++;
+		const newPost = await post.save();
+		res.status(200).json({
+			comments: newPost.comments,
+			numComments: newPost.numComments,
+		});
+	} catch (err) {
+		res.status(500).json({
+			err: err,
 		});
 	}
 };

@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 8080;
 
 const authRoutes = require("./routes/auth");
 const postRoutes = require("./routes/post");
+const userRoutes = require("./routes/user");
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use("/images", express.static(path.join(__dirname, "images")));
 // Routes Definition
 app.use("/auth", authRoutes);
 app.use("/posts", postRoutes);
+app.use("/user", userRoutes);
 
 // Handling errors
 app.use((errors, req, res, next) => {
